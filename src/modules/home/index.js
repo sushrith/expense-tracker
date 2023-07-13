@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import OverViewComponent from "./OverViewComponent";
 import TransactionsComponent from "./TransactionsComponent";
-
+import axios from 'axios';
 const Container = styled.div`
   background-color: white;
   color: #0d1d2c;
@@ -18,23 +18,35 @@ const Container = styled.div`
 const HomeComponent = (props) => {
     const [transactions, updateTransaction] = useState([]);
     const [expense, updateExpense] = useState(0);
-    const [income, updateIncome] = useState(0);
+    // const [income, updateIncome] = useState(0);
 
     const calculateBalance = () => {
         let exp = 0;
-        let inc = 0;
         transactions.map((payload) =>
-            payload.type === "EXPENSE"
-                ? (exp = exp + payload.amount)
-                : (inc = inc + payload.amount),
+            exp=exp+payload.amt
         );
         updateExpense(exp);
-        updateIncome(inc);
     };
     useEffect(() => calculateBalance(), [transactions]);
-
+    useEffect(() => {
+        const transactionArray = [...transactions];
+        axios.get(`http://127.0.0.1:5000/api/users/${1}/expenses`).then(res=>{
+            console.log(res);
+            res.data.map(val=>{
+                let item = {amt:val.amt,desc:val.desc,category:val.category}
+                transactionArray.push(item);
+            });
+            updateTransaction(transactionArray);
+        })
+    },[])
     const addTransaction = (payload) => {
         const transactionArray = [...transactions];
+        // fetch()
+        axios.post(`http://127.0.0.1:5000/api/users/${1}/expenses`,{
+            desc:payload.desc,
+            amt:payload.amt,
+            category:payload.category
+        }).then((res)=>{console.log(res)});
         transactionArray.push(payload);
         updateTransaction(transactionArray);
     };
@@ -42,7 +54,7 @@ const HomeComponent = (props) => {
         <Container>
             <OverViewComponent
                 expense={expense}
-                income={income}
+                // income={income}
                 addTransaction={addTransaction}
             />
             {transactions?.length ? (

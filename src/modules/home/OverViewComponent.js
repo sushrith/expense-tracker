@@ -88,13 +88,14 @@ const RadioBox = styled.div`
   }
 `;
 const AddTransactionView = (props) => {
-  const [amount, setAmount] = useState();
+  const [amt, setAmt] = useState();
   const [desc, setDesc] = useState();
-  const [type, setType] = useState("EXPENSE");
+  const [category, setCategory] = useState();
+  // const [type, setType] = useState("EXPENSE");
   const [check,setCheck]=useState(false);
 
   useEffect(()=>{
-    if(!amount)
+    if(!amt)
     {
       setCheck(false);
     }
@@ -102,21 +103,26 @@ const AddTransactionView = (props) => {
       setCheck(true);
     }
 
-  },[amount]);
+  },[amt]);
   return (
     <AddTransactionContainer isAddTxnVisible={props.isAddTxnVisible}>
       <input
         placeholder="Amount"
         type="number"
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
+        value={amt}
+        onChange={(e) => setAmt(e.target.value)}
         />
       <input
         placeholder="Description"
         value={desc}
         onChange={(e) => setDesc(e.target.value)}
       />
-      <RadioBox>
+      <input
+        placeholder="Category"
+        value={category}
+        onChange={(e) => setCategory(e.target.value)}
+      />
+      {/* <RadioBox>
         <input
           type="radio"
           id="expense"
@@ -135,15 +141,15 @@ const AddTransactionView = (props) => {
           onChange={(e) => setType(e.target.value)}
         />
         <label htmlFor="Expense">Income</label>
-      </RadioBox>
+      </RadioBox> */}
 
       {check &&<AddTransaction
         onClick={() =>
           props.addTransaction({
             id: Date.now(),
-            amount: Number(amount),
+            amt: Number(amt),
             desc,
-            type,
+            category,
           })
         }
       >
@@ -157,7 +163,7 @@ const OverViewComponent = (props) => {
   return (
     <Container>
       <BalanceBox>
-        Balance: ${props.income - props.expense}
+        Expense: ${props.expense}
         <AddTransaction onClick={() => toggleAddTXn((isVisible) => !isVisible)}>
           {isAddTxnVisible ? "CANCEL" : "ADD"}
         </AddTransaction>
@@ -171,14 +177,14 @@ const OverViewComponent = (props) => {
           }}
         />
       )}
-      <ExpenseContainer>
+      {/* <ExpenseContainer>
         <ExpenseBox>
           Expense<span>${props.expense}</span>
-        </ExpenseBox>
-        <ExpenseBox isIncome={true}>
+        </ExpenseBox> */}
+        {/* <ExpenseBox isIncome={true}>
           Income<span>${props.income}</span>
-        </ExpenseBox>
-      </ExpenseContainer>
+        </ExpenseBox> */}
+      {/* </ExpenseContainer> */}
     </Container>
   );
 };

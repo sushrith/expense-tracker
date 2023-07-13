@@ -36,9 +36,10 @@ const Cell = styled.div`
 `;
 const TransactionCell = (props) => {
   return (
-    <Cell isExpense={props.payload?.type === "EXPENSE"}>
+    <Cell isExpense="true">
+      <span>{props.payload?.category}</span>
       <span>{props.payload?.desc}</span>
-      <span>${props.payload?.amount}</span>
+      <span>${props.payload?.amt}</span>
     </Cell>
   );
 };
