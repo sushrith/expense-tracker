@@ -1,0 +1,1 @@
+Add a feature to visualise the categorical expenditure recorded in the application using appropriate graphical representations

@@ -84,7 +84,7 @@ def get_expenses_by_category(username: str, category: str) -> List[Expense]:
 @app.route("/api/users/<int:user_id>/expenses", methods=["GET", "POST"])
 @cross_origin()
 def expenses(user_id: int):
-    print("Fuk")
+    print("Expense API called")
     if request.method == "GET":
         expenses = get_expenses(f"user{user_id}")
         return jsonify([expense.to_dict() for expense in expenses])
@@ -98,20 +98,14 @@ def expenses(user_id: int):
         result = add_expense(f"user{user_id}", desc, amt, category, timestamp)
         print("Added")
         return jsonify({"result": result})
-    else:
-        print("LkAT GAYA",request.method)
 
-@app.route("/api/users/<int:user_id>/categories/<category>", methods=["GET"])
-def expenses_by_category(user_id: int, category: str):
-    expenses = get_expenses_by_category(f"user{user_id}", category)
-    return jsonify([expense.to_dict() for expense in expenses])
+
+
 
 @app.route("/")
 def hello():
     return "Hello"
 from datetime import datetime
 if __name__ == "__main__":
-
-    add_expense("user1","Khana", 100, "food", "")
 
     app.run(debug=True)
